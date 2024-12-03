@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Body, Query
 from fastapi.encoders import jsonable_encoder
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 
 from server.db.student import (
     add_student,
@@ -51,7 +51,7 @@ async def update_student_data(id: str, req: dict = Body(...)):
     req_data = {k: v for k, v in req.items() if k in valid_fields and v is not None}
     updated_student = await update_student(id, req_data)
     if updated_student:
-        return JSONResponse(content={}, status_code=204)
+        return Response(status_code=204)
     return ErrorResponseModel(
         404,
         "There was an error updating the student data.",
